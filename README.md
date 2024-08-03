@@ -40,3 +40,7 @@ You will also see any lint errors in the console.
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+To learn React, check out the [Material UI documentation](https://mui.com/).
+
+To learn React, check out the [react-window documentation](https://www.npmjs.com/package/react-window).
