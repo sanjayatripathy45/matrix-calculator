@@ -15,7 +15,6 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
 
   const handleChange = useCallback(
     (value: string, rowIndex: number, colIndex: number) => {
-      // Parse input value, or default to 0 if it's an invalid number
       const newValue = value === "" ? 0 : parseInt(value, 10);
 
       setMatrix((prevMatrix) =>
@@ -73,7 +72,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
                     handleChange(e.target.value, rowIndex, columnIndex)
                   }
                   InputProps={{
-                    disableUnderline: true,
+                    // disableUnderline: true,
                     sx: {
                       'input[type="number"]': {
                         textAlign: "center",
@@ -82,17 +81,14 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
                         outline: "none",
                         "-moz-appearance": "textfield",
                         appearance: "none",
-                        // Additional styling to reduce width and remove spinner
-                        width: "auto", // Adjust width here
+                        width: "auto",
                         height: "100%",
-                        minWidth: "50px", // Optional: minimum width if needed
+                        minWidth: "50px",
                       },
-                      // Remove increment/decrement buttons
                       inputProps: {
                         style: {
-                          // Custom styles
+                          // styles
                         },
-                        // Disable the spinner
                         'input[type="number"]::-webkit-inner-spin-button': {
                           WebkitAppearance: "none",
                           margin: 0,

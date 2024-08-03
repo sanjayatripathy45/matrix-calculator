@@ -11,13 +11,13 @@ const MatrixGenerator: React.FC = () => {
   const [matrixB, setMatrixB] = useState<number[][]>([]);
   const [result, setResult] = useState<number[][] | null>(null);
 
-  const initializeMatrix = useCallback((isMultiplication: boolean): number[][] => {
-    return Array.from({ length: rows }, (_, rowIndex) =>
-      Array.from({ length: cols }, (_, colIndex) =>
+  const initializeMatrix = useCallback((rowCount: number, colCount: number, isMultiplication: boolean): number[][] => {
+    return Array.from({ length: rowCount }, (_, rowIndex) =>
+      Array.from({ length: colCount }, (_, colIndex) =>
         isMultiplication ? rowIndex * colIndex : rowIndex + colIndex
       )
     );
-  }, [rows, cols]);
+  }, []);
 
   const handleGenerate = () => {
     if (inputRows === '' || inputCols === '') {
@@ -25,10 +25,9 @@ const MatrixGenerator: React.FC = () => {
       return;
     }
 
-    // Ensure inputRows and inputCols are numbers before using parseInt
     const parsedRows = typeof inputRows === 'number' ? inputRows : parseInt(inputRows, 10);
     const parsedCols = typeof inputCols === 'number' ? inputCols : parseInt(inputCols, 10);
-
+    
     if (isNaN(parsedRows) || isNaN(parsedCols) || parsedRows < 0 || parsedCols < 0) {
       console.error('Invalid input for Rows or Columns');
       return;
@@ -36,9 +35,9 @@ const MatrixGenerator: React.FC = () => {
 
     setRows(parsedRows);
     setCols(parsedCols);
-    setMatrixA(initializeMatrix(false));
-    setMatrixB(initializeMatrix(true));
-    setResult(null); // Clear result when generating new matrices
+    setMatrixA(initializeMatrix(parsedRows, parsedCols, false));
+    setMatrixB(initializeMatrix(parsedRows, parsedCols, true));
+    setResult(null); 
   };
 
   const handleAdd = () => {
@@ -73,7 +72,7 @@ const MatrixGenerator: React.FC = () => {
             onChange={(e) => setInputRows(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
             fullWidth
             variant="outlined"
-            inputProps={{ min: 0, step: 1 }} // Restrict input to non-negative integers
+            inputProps={{ min: 0, step: 1 }} 
             InputProps={{ style: { border: 'none' } }}
           />
         </Grid>
@@ -85,7 +84,7 @@ const MatrixGenerator: React.FC = () => {
             onChange={(e) => setInputCols(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
             fullWidth
             variant="outlined"
-            inputProps={{ min: 0, step: 1 }} // Restrict input to non-negative integers
+            inputProps={{ min: 0, step: 1 }} 
             InputProps={{ style: { border: 'none' } }}
           />
         </Grid>
