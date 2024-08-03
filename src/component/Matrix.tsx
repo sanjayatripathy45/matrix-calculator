@@ -2,25 +2,19 @@ import React, { useCallback, useRef } from "react";
 import { Box, TextField } from "@mui/material";
 import { FixedSizeGrid as Grid, GridChildComponentProps } from "react-window";
 
-// Define the props for the Matrix component
 interface MatrixProps {
-  rows: number; // Number of rows in the matrix
-  cols: number; // Number of columns in the matrix
-  matrix: number[][]; // 2D array representing the matrix values
-  setMatrix: React.Dispatch<React.SetStateAction<number[][]>>; // Function to update the matrix state
+  rows: number;
+  cols: number;
+  matrix: number[][];
+  setMatrix: React.Dispatch<React.SetStateAction<number[][]>>;
 }
 
-// Matrix component definition
 const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Handle changes in cell values
+
   const handleChange = useCallback(
     (value: string, rowIndex: number, colIndex: number) => {
-      // Convert value to number, default to 0 if empty
       const newValue = value === "" ? 0 : parseInt(value, 10);
-
-      // Update the matrix state with the new value
       setMatrix((prevMatrix) =>
         prevMatrix.map((row, rIdx) =>
           rIdx === rowIndex
@@ -29,7 +23,7 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
         )
       );
     },
-    [setMatrix] // Dependency array: handleChange depends on setMatrix
+    [setMatrix]
   );
 
   return (
@@ -38,24 +32,24 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
       height="400px"
       border={1}
       borderColor="grey.400"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
       overflow="auto"
       p={1}
       bgcolor="background.paper"
-      ref={containerRef} 
+      ref={containerRef}
     >
       <Grid
         columnCount={cols}
-        rowCount={rows} 
-        columnWidth={100} 
-        rowHeight={45} 
-        width={500}
-        height={400} 
+        rowCount={rows}
+        columnWidth={100}
+        rowHeight={45}
+        width={Math.min(1000 * cols, 1000)}
+        height={Math.min(45 * rows, 400)}
       >
         {({ columnIndex, rowIndex, style }: GridChildComponentProps) => {
-          // Check if the current cell is within bounds
           if (rowIndex >= rows || columnIndex >= cols) return null;
-
-          // Get the current value of the cell
           const cellValue = matrix[rowIndex]?.[columnIndex] ?? "";
           return (
             <div style={style}>
@@ -77,30 +71,29 @@ const Matrix: React.FC<MatrixProps> = ({ rows, cols, matrix, setMatrix }) => {
                   onChange={(e) =>
                     handleChange(e.target.value, rowIndex, columnIndex)
                   }
-                  variant="standard" 
+                  variant="standard"
                   InputProps={{
                     disableUnderline: true,
                     sx: {
                       'input[type="number"]': {
-                        textAlign: "center", 
-                        padding: "0", 
-                        border: "none", 
-                        outline: "none", 
+                        textAlign: "center",
+                        padding: "0",
+                        border: "none",
+                        outline: "none",
                         WebkitAppearance: "none",
                         MozAppearance: "textfield",
                         width: "auto",
                         height: "100%",
                         minWidth: "50px",
                       },
-                    
                     },
                   }}
                   inputProps={{
                     style: {
-                      width: "100%", 
-                      height: "100%", 
-                      border: 'none', 
-                      outline: 'none',
+                      width: "100%",
+                      height: "100%",
+                      border: "none",
+                      outline: "none",
                     },
                   }}
                 />
