@@ -1,6 +1,6 @@
 # Matrix Calculator App
 
-This project was bootstrapped with [Create React App]([https://github.com/facebook/create-react-app](https://matrix-calculators.vercel.app/)) and includes functionality for matrix operations and infinite scrolling.
+This project was bootstrapped with [Create React App]([https://github.com/facebook/create-react-app](https://matrix-calculators.vercel.app/) and includes functionality for matrix operations and infinite scrolling.
 
 ## Project Overview
 
