@@ -28,7 +28,7 @@ The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 
-##Features
+## Features
 
 * Matrix Generation: Input the number of rows and columns to generate matrices.
 * Matrix Operations: Perform addition, subtraction, and multiplication on matrices.
