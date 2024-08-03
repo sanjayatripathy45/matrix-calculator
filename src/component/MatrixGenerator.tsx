@@ -2,15 +2,19 @@ import React, { useCallback, useState } from 'react';
 import { Box, TextField, Button, Container, Grid, Typography } from '@mui/material';
 import Matrix from './Matrix';
 
+// MatrixGenerator component definition
 const MatrixGenerator: React.FC = () => {
+  // State to store user input for rows and columns
   const [inputRows, setInputRows] = useState<number | ''>('');
   const [inputCols, setInputCols] = useState<number | ''>('');
+  // State to store matrix dimensions and matrix values
   const [rows, setRows] = useState<number>(0);
   const [cols, setCols] = useState<number>(0);
   const [matrixA, setMatrixA] = useState<number[][]>([]);
   const [matrixB, setMatrixB] = useState<number[][]>([]);
   const [result, setResult] = useState<number[][] | null>(null);
 
+  // Initialize a matrix with specific values
   const initializeMatrix = useCallback((rowCount: number, colCount: number, isMultiplication: boolean): number[][] => {
     return Array.from({ length: rowCount }, (_, rowIndex) =>
       Array.from({ length: colCount }, (_, colIndex) =>
@@ -19,6 +23,7 @@ const MatrixGenerator: React.FC = () => {
     );
   }, []);
 
+  // Handle matrix generation based on user input
   const handleGenerate = () => {
     if (inputRows === '' || inputCols === '') {
       console.error('Rows and Columns cannot be empty');
@@ -35,11 +40,13 @@ const MatrixGenerator: React.FC = () => {
 
     setRows(parsedRows);
     setCols(parsedCols);
+    // Initialize matrices A and B with specific values
     setMatrixA(initializeMatrix(parsedRows, parsedCols, false));
     setMatrixB(initializeMatrix(parsedRows, parsedCols, true));
-    setResult(null); 
+    setResult(null); // Clear previous result
   };
 
+  // Handle matrix addition
   const handleAdd = () => {
     const resultMatrix = matrixA.map((row, rowIndex) =>
       row.map((value, colIndex) => value + (matrixB[rowIndex]?.[colIndex] || 0))
@@ -47,6 +54,7 @@ const MatrixGenerator: React.FC = () => {
     setResult(resultMatrix);
   };
 
+  // Handle matrix subtraction
   const handleSubtract = () => {
     const resultMatrix = matrixA.map((row, rowIndex) =>
       row.map((value, colIndex) => value - (matrixB[rowIndex]?.[colIndex] || 0))
@@ -54,6 +62,7 @@ const MatrixGenerator: React.FC = () => {
     setResult(resultMatrix);
   };
 
+  // Handle matrix multiplication
   const handleMultiply = () => {
     const resultMatrix = matrixA.map((row, rowIndex) =>
       row.map((value, colIndex) => value * (matrixB[rowIndex]?.[colIndex] || 0))
@@ -62,7 +71,8 @@ const MatrixGenerator: React.FC = () => {
   };
 
   return (
-    <Container disableGutters>
+    <Container>
+      {/* Input fields for rows and columns */}
       <Grid container spacing={2} mb={2}>
         <Grid item xs={6}>
           <TextField
@@ -73,7 +83,7 @@ const MatrixGenerator: React.FC = () => {
             fullWidth
             variant="outlined"
             inputProps={{ min: 0, step: 1 }} 
-            InputProps={{ style: { border: 'none' } }}
+            InputProps={{ sx: { border: 'none', outline: 'none' } }}
           />
         </Grid>
         <Grid item xs={6}>
@@ -85,31 +95,37 @@ const MatrixGenerator: React.FC = () => {
             fullWidth
             variant="outlined"
             inputProps={{ min: 0, step: 1 }} 
-            InputProps={{ style: { border: 'none' } }}
+            InputProps={{ sx: { border: 'none', outline: 'none' } }}
           />
         </Grid>
         <Grid item xs={12} mt={2}>
           <Button variant="contained" onClick={handleGenerate}>Generate</Button>
         </Grid>
       </Grid>
+      {/* Display matrices A and B */}
       {(rows > 0 && cols > 0) && (
-        <Box mb={2} display="flex" justifyContent="space-between" gap={2}>
+        <Box mb={2} display="flex" justifyContent="center" alignItems="center" gap={2}>
           <Box width="45%">
             <Typography variant="h6" align="center" gutterBottom>
               Matrix A
             </Typography>
-            <Matrix rows={rows} cols={cols} matrix={matrixA} setMatrix={setMatrixA} />
+            <Box display="flex" justifyContent="center">
+              <Matrix rows={rows} cols={cols} matrix={matrixA} setMatrix={setMatrixA} />
+            </Box>
           </Box>
           <Box width="45%">
             <Typography variant="h6" align="center" gutterBottom>
               Matrix B
             </Typography>
-            <Matrix rows={rows} cols={cols} matrix={matrixB} setMatrix={setMatrixB} />
+            <Box display="flex" justifyContent="center">
+              <Matrix rows={rows} cols={cols} matrix={matrixB} setMatrix={setMatrixB} />
+            </Box>
           </Box>
         </Box>
       )}
+      {/* Buttons to perform matrix operations */}
       {rows > 0 && cols > 0 && (
-        <Grid container spacing={2} mb={2}>
+        <Grid container spacing={2} mb={2} justifyContent="center">
           <Grid item xs={4}>
             <Button variant="contained" onClick={handleAdd}>Add Matrices</Button>
           </Grid>
@@ -121,12 +137,17 @@ const MatrixGenerator: React.FC = () => {
           </Grid>
         </Grid>
       )}
+      {/* Display result if available */}
       {result && (
-        <Box mt={2}>
-          <Typography variant="h4" component="h2" align="center" gutterBottom>
-            Result
-          </Typography>
-          <Matrix rows={rows} cols={cols} matrix={result} setMatrix={() => {}} />
+        <Box mt={2} display="flex" justifyContent="center" alignItems="center" sx={{ border: 'none', outline: 'none' }}>
+          <Box>
+            <Typography variant="h4" component="h2" align="center" gutterBottom>
+              Result
+            </Typography>
+            <Box display="flex" justifyContent="center" sx={{ border: 'none', outline: 'none' }}>
+              <Matrix rows={rows} cols={cols} matrix={result} setMatrix={() => {}} />
+            </Box>
+          </Box>
         </Box>
       )}
     </Container>
